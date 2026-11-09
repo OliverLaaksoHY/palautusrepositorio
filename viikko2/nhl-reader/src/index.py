@@ -1,3 +1,4 @@
+"""placeholder"""
 from rich.console import Console
 from rich.prompt import Prompt
 from rich.table import Table
@@ -14,6 +15,7 @@ console = Console()
 
 
 def main():
+    """placeholder"""
     season = Prompt.ask("Select season", choices=SEASONS, default="2024-25")
 
     url = f"https://studies.cs.helsinki.fi/nhlstats/{season}/players"
