@@ -21,28 +21,43 @@ def main():
     url = f"https://studies.cs.helsinki.fi/nhlstats/{season}/players"
     stats = PlayerStats(PlayerReader(url))
 
-    nationalities = sorted({p.nationality for p in stats.players})
+    filter_by = Prompt.ask(
+        "Filter by",
+        choices=["team", "nationality"],
+        default="team",
+    )
+    if filter_by == "team":
+        choices = sorted({p.team for p in stats.players})
+        selection_label = "team"
+    else:
+        choices = sorted({p.nationality for p in stats.players})
+        selection_label = "nationality"
 
     while True:
-        nationality = Prompt.ask(
-            f"Select nationality ({'/'.join(nationalities)}, empty to quit)",
+        selection = Prompt.ask(
+            f"Select {selection_label} ({'/'.join(choices)}, empty to quit)",
             default="",
         ).upper()
 
-        if nationality == "":
+        if selection == "":
             break
-        if nationality not in nationalities:
-            console.print("[red]Unknown nationality.[/red]")
+        if selection not in choices:
+            console.print(f"[red]Unknown {selection_label}.[/red]")
             continue
 
-        table = Table(title=f"Season {season} players from {nationality}")
+        table = Table(title=f"Season {season} players from {selection}")
         table.add_column("Name", style="cyan", no_wrap=True)
         table.add_column("Team", style="magenta")
         table.add_column("Goals", justify="right", style="green")
         table.add_column("Assists", justify="right", style="green")
         table.add_column("Points", justify="right", style="bold green")
 
-        for player in stats.top_scorers_by_nationality(nationality):
+        players = (
+            stats.top_scorers_by_team(selection)
+            if filter_by == "team"
+            else stats.top_scorers_by_nationality(selection)
+        )
+        for player in players:
             table.add_row(
                 player.name,
                 player.team,
