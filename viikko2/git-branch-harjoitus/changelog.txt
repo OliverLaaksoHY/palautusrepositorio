@@ -1,0 +1,4 @@
+Changelog
+=========
+
+- Added changelog file to bugtracker branch.
