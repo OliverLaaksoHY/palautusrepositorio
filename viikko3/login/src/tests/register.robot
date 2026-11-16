@@ -14,6 +14,20 @@ Register With Valid Username And Password
     Click  button >> text=Register
     Register Should Succeed
 
+Register With Matching Password And Password Confirmation
+    Set Username  sami
+    Set Password  kalle123
+    Set Password Confirmation  kalle123
+    Click  button >> text=Register
+    Register Should Succeed
+
+Register With Nonmatching Password And Password Confirmation
+    Set Username  sami
+    Set Password  kalle123
+    Set Password Confirmation  kalle124
+    Click  button >> text=Register
+    Register Should Fail With Message  Passwords do not match
+
 Register With Too Short Username And Valid Password
     Set username  k
     Set password  kalle123
@@ -27,6 +41,34 @@ Register With Valid Username And Too Short Password
     Set password Confirmation  s
     Click  button >> text=Register
     Register Should Fail With Message  Password too short
+
+Register With Password Containing Letters And Numbers
+    Set Username  sami
+    Set Password  kalle123
+    Set Password Confirmation  kalle123
+    Click  button >> text=Register
+    Register Should Succeed
+
+Register With Password Containing Special Character
+    Set Username  sami
+    Set Password  kalle#abc
+    Set Password Confirmation  kalle#abc
+    Click  button >> text=Register
+    Register Should Succeed
+
+Register With Password Consisting Only Of Letters
+    Set Username  sami
+    Set Password  kallekalle
+    Set Password Confirmation  kallekalle
+    Click  button >> text=Register
+    Register Should Fail With Message  Password cannot consist only of letters
+
+Register With Password Consisting Only Of Uppercase Letters
+    Set Username  sami
+    Set Password  KalleKalle
+    Set Password Confirmation  KalleKalle
+    Click  button >> text=Register
+    Register Should Fail With Message  Password cannot consist only of letters
 
 
 Register With Username That Is Already In Use

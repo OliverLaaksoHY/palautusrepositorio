@@ -40,7 +40,11 @@ class UserService:
         if not username or not password:
             raise UserInputError("Username and password are required")
 
-        # toteuta loput tarkastukset tänne ja nosta virhe virhetilanteissa
+        if password != password_confirmation:
+            raise UserInputError("Passwords do not match")
+
+        if password.isalpha():
+            raise UserInputError("Password cannot consist only of letters")
 
 
 user_service = UserService()
